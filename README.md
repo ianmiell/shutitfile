@@ -32,11 +32,22 @@ RUN ls /tmp
 # It re-tries every 5 seconds
 UNTIL ['.*event_complete.*']
 
+# TODO: ping and different result based on what happens
+
 # You can debug by creating a 'pause point'. This will give you a shell mid-run to examine the state of the system.
 PAUSE_POINT You now have a shell to examine the situation
 ```
 
 TODO: video of above
+
+```
+sudo pip install shutit
+shutit skeleton
+... shutitfile, bash
+cd 
+vi Shutitfile1
+./run.sh
+```
 
 
 A cheat sheet for ShutIt commands is available [here][https://github.com/ianmiell/shutit-templates/blob/shutitfile/CheatSheet.md]
