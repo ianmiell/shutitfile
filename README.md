@@ -32,10 +32,15 @@ RUN ls /tmp
 # It re-tries every 5 seconds
 UNTIL ['.*event_complete.*']
 
-# TODO: ping and different result based on what happens
+# ping and run different commands based on what happens
+SEND ping -c 1 -t 1 bbc.co.uk
+EXPECT_REACT ['.*0 packets received.*=echo error > /tmp/bbc_pingres','.*Time to live exceeded.*=echo ttl_exceed > /tmp/bbc_pingres','.*1 packets received.*=echo ok > /tmp/bbc_pingres','.*Unknown host.*=echo unknown > /tmp/bbc_pingres']
 
 # You can debug by creating a 'pause point'. This will give you a shell mid-run to examine the state of the system.
 PAUSE_POINT You now have a shell to examine the situation
+
+# Exit the session
+LOGOUT
 ```
 
 TODO: video of above
