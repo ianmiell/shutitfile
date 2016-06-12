@@ -50,17 +50,7 @@ PAUSE_POINT You now have a shell to examine the situation
 LOGOUT
 ```
 
-TODO: video of above
-
-```
-sudo pip install shutit
-shutit skeleton
-... shutitfile, bash
-cd 
-vi Shutitfile1
-./run.sh
-```
-
+[![asciicast of above script](https://asciinema.org/a/48639.png)](https://asciinema.org/a/48639)
 
 A cheat sheet for ShutIt commands is available [here][https://github.com/ianmiell/shutit-templates/blob/shutitfile/CheatSheet.md]
 
@@ -69,7 +59,6 @@ A cheat sheet for ShutIt commands is available [here][https://github.com/ianmiel
 ```
 sudo pip install shutit
 ```
-
 
 ## Examples 
 
@@ -80,10 +69,10 @@ sudo pip install shutit
 
 ## 0) Set up
 
-Check out this repo and the examples ShutItFiles:
+Check out this repo and the example ShutItFiles:
 
 ```
-sudo pip install shutit
+sudo pip install --upgrade --force shutit
 git clone https://github.com/ianmiell/shutitfile && cd shutitfile
 ```
                                                                                                                                              
