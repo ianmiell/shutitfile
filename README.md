@@ -2,21 +2,27 @@
 
 ## Automation for everyone
 
-A ShutItFile is an extension of the Dockerfile concept.
+A ShutItFile is an extension of the Dockerfile concept for shell automation.
 
-In the same way that Dockerfiles were designed as a simple way to create Docker images, ShutItFiles are a simple way to create ShutIt scripts.
+In the same way that Dockerfiles were designed as a simple way to create Docker images, ShutItFiles are a simple way to create [ShutIt](http://ianmiell.github.io/shutit/) scripts.
 
-ShutItFiles can be used to automate tasks, or automate the building of composable Docker images.
+ShutItFiles can be used to automate tasks, or automate the building of [composable Docker images](https://github.com/ianmiell/shutit/blob/gh-pages/images/ShutIt.png).
 
-Here's an annotated example TODO:
+Here's an annotated example of an bash script which:
+
+- Logs onto a server
+- Runs a command and waits until it completes
+- pings a server, and takes different actions based on its output
+- Gives you a shell mid-run to do with what you will
+- Logs out
 
 ```
-# Specify we are working in a simple bash shell (the default). Other options include a 'docker' container.
+# Specify we are working in a simple bash shell (the default). Other options include 'docker' container.
 DELIVERY bash
 
 # Log into my server
-LOGIN ssh imiell@shutit.tk
-# A password is required, so we prompt for one here
+LOGIN ssh imiell@myserver.com
+# A password is likely required, so we prompt for one here
 GET_PASSWORD Input your password
 
 # Run the command 'whoami'
@@ -24,12 +30,13 @@ RUN whoami
 # If the output of the previous RUN command is not as we expect (imiell), throw an error
 ASSERT_OUTPUT imiell
 
-# Remove any left-over file, sleep for 15 seconds, then create a file in the /tmp directory
+# Ensure a file is removed, sleep for 15 seconds, then create that file
+# Run in the background
 RUN rm -f /tmp/event_complete && sleep 15 && touch /tmp/event_complete &
 # List files in the /tmp directory
 RUN ls /tmp
 # Wait until the output of the previous command contains the filename created.
-# It re-tries every 5 seconds
+# It re-tries every 5 seconds until this is seen.
 UNTIL ['.*event_complete.*']
 
 # ping and run different commands based on what happens
