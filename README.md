@@ -63,8 +63,11 @@ sudo pip install shutit
 ## Examples 
 
 0) Set up
+
 1) Create file locally if it doesn't exist
+
 2) Create Docker image, commit and push
+
 3) Docker image with option to build dev tools in
 
 ## 0) Set up
