@@ -74,8 +74,6 @@ sudo pip install shutit
 
 3) Docker image with option to build dev tools in
 
-4) 
-
 ## 0) Set up
 
 Check out this repo and the example ShutItFiles:
