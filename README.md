@@ -4,9 +4,12 @@
 
 A ShutItFile is an extension of the Dockerfile concept for shell automation.
 
-In the same way that Dockerfiles were designed as a simple way to create Docker images, ShutItFiles are a simple way to create [ShutIt](http://ianmiell.github.io/shutit/) scripts.
+In the same way that Dockerfiles were designed as a simple way to create Docker
+images, ShutItFiles are a simple way to create [ShutIt](http://ianmiell.github.io/shutit/)
+scripts.
 
-ShutItFiles can be used to automate tasks, or automate the building of [composable Docker images](https://github.com/ianmiell/shutit/blob/gh-pages/images/ShutIt.png).
+ShutItFiles can be used to automate tasks, or automate the building of
+[composable Docker images](https://github.com/ianmiell/shutit/blob/gh-pages/images/ShutIt.png).
 
 Here's an annotated example of an bash script which:
 
@@ -17,7 +20,8 @@ Here's an annotated example of an bash script which:
 - Logs out
 
 ```
-# Specify we are working in a simple bash shell (the default). Other options include 'docker' container.
+# Specify we are working in a simple bash shell (the default). Other options
+# include 'docker' container.
 DELIVERY bash
 
 # Log into my server
@@ -27,7 +31,8 @@ GET_PASSWORD Input your password
 
 # Run the command 'whoami'
 RUN whoami
-# If the output of the previous RUN command is not as we expect (imiell), throw an error
+# If the output of the previous RUN command is not as we expect (imiell),
+# throw an error
 ASSERT_OUTPUT imiell
 
 # Ensure a file is removed, sleep for 15 seconds, then create that file
@@ -43,7 +48,8 @@ UNTIL ['.*event_complete.*']
 SEND ping -c 1 -t 1 bbc.co.uk
 EXPECT_REACT ['.*0 packets received.*=echo error > /tmp/bbc_pingres','.*Time to live exceeded.*=echo ttl_exceed > /tmp/bbc_pingres','.*1 packets received.*=echo ok > /tmp/bbc_pingres','.*Unknown host.*=echo unknown > /tmp/bbc_pingres']
 
-# You can debug by creating a 'pause point'. This will give you a shell mid-run to examine the state of the system.
+# You can debug by creating a 'pause point'. This will give you a shell mid-run
+# to examine the state of the system.
 PAUSE_POINT You now have a shell to examine the situation
 
 # Exit the session
@@ -84,7 +90,8 @@ git clone https://github.com/ianmiell/shutitfile && cd shutitfile
 
 ## 1) Create file locally if it doesn't exist
 
-This ShutItFile which creates the file /tmp/shutit_marker on the running host if it doesn't exist:
+This ShutItFile which creates the file /tmp/shutit_marker on the running host if
+it doesn't exist:
 
 ```
 IF_NOT FILE_EXISTS /tmp/shutit_marker
@@ -119,7 +126,8 @@ PUSH myusername/example_shutitfile:latest
 ```
 
 Your Docker credentials need to be in your ~/.shutit/config file, eg:
-NB this file is created by ShutIt and stored with 0600 permissions (ie only you can view it)
+NB this file is created by ShutIt and stored with 0600 permissions (ie only you
+can view it)
 
 ```
 [repository]
@@ -130,8 +138,8 @@ email:you@example.com
 
 ## 3) Set up my home server
 
-This more practical example sets up my home server. It also serves as documentation
-for what my home servers and other machines typically need.
+This more practical example sets up my home server. It also serves as
+documentation for what my home servers and other machines typically need.
 
 ```
 # We assert here that we are running as root
