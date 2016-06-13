@@ -174,6 +174,9 @@ RUN usermod -G docker -a imiell
 # Set up local storage
 RUN mkdir -p /media/storage_{1,2}
 
+# Create space folder and chown it to imiell
+RUN mkdir -p /space && chown imiell: /space
+
 # Generate an ssh key
 RUN ssh-keygen
 # Note that the response to 'already exists' below prevents overwrite here.                                                                                                       
@@ -183,9 +186,11 @@ EXPECT_MULTI ['file in which=','empty for no passphrase=','Enter same passphrase
 USER imiell
 # If it's not been done before, check out my dotfiles and set it up
 IF_NOT FILE_EXISTS /home/imiell/.dotfiles
+	RUN cd /home/imiell
 	RUN git clone --depth=1 https://github.com/ianmiell/dotfiles ~imiell/.dotfiles
 	RUN cd .dotfiles
 	RUN ./script/bootstrap
+	EXPECT_MULTI ['What is your github author name=Ian Miell','What is your github author email=ian.miell@gmail.com','verwrite=O']
 ENDIF
 LOGOUT
 ```
@@ -193,10 +198,17 @@ LOGOUT
 Latest version [here](https://github.com/ianmiell/shutit-home-server/blob/master/Shutitfile)
 
 TODO: video
+sudo su
+apt-get update && apt-get install -y asciinema
 
-useradd imiell
-apt-get install git python-pip 
+adduser imiell
+apt-get install -y git python-pip
 pip install shutit
 git clone https://github.com/ianmiell/shutit-home-server
 cd shutit-home-server
 ./run.sh
+
+exit
+
+edit the asciinema file
+login and push
