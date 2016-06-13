@@ -189,4 +189,6 @@ ENDIF
 LOGOUT
 ```
 
+Latest version [here](https://github.com/ianmiell/shutit-home-server/blob/master/Shutitfile)
+
 TODO: video
