@@ -168,7 +168,8 @@ RUN pip install shutit
 RUN usermod -G docker -a imiell 
 
 # Pull my dev tools image from Dockerhub
-RUN docker pull imiell/docker-dev-tools-image
+# Takes a while, so leave out for demo
+#RUN docker pull imiell/docker-dev-tools-image
 
 # Set up local storage
 RUN mkdir -p /media/storage_{1,2}
@@ -179,9 +180,9 @@ RUN ssh-keygen
 EXPECT_MULTI ['file in which=','empty for no passphrase=','Enter same passphrase again=','already exists=n'] 
 
 # Log me in as imiell
-LOGIN imiell
+USER imiell
 # If it's not been done before, check out my dotfiles and set it up
-IF NOT FILE_EXISTS /home/imiell/.dotfiles
+IF_NOT FILE_EXISTS /home/imiell/.dotfiles
 	RUN git clone --depth=1 https://github.com/ianmiell/dotfiles ~imiell/.dotfiles
 	RUN cd .dotfiles
 	RUN ./script/bootstrap
@@ -193,6 +194,7 @@ Latest version [here](https://github.com/ianmiell/shutit-home-server/blob/master
 
 TODO: video
 
+useradd imiell
 apt-get install git python-pip 
 pip install shutit
 git clone https://github.com/ianmiell/shutit-home-server
