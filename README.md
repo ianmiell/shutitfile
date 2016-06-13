@@ -176,7 +176,7 @@ RUN mkdir -p /media/storage_{1,2}
 # Generate an ssh key
 RUN ssh-keygen
 # Note that the response to 'already exists' below prevents overwrite here.                                                                                                       
-EXPECT_MULTI ['file in which':'','empty for no passphrase':'','Enter same passphrase again':'','already exists':'n'] 
+EXPECT_MULTI ['file in which=','empty for no passphrase=','Enter same passphrase again=','already exists=n'] 
 
 # Log me in as imiell
 LOGIN imiell
@@ -192,3 +192,9 @@ LOGOUT
 Latest version [here](https://github.com/ianmiell/shutit-home-server/blob/master/Shutitfile)
 
 TODO: video
+
+apt-get install git python-pip 
+pip install shutit
+git clone https://github.com/ianmiell/shutit-home-server
+cd shutit-home-server
+./run.sh
