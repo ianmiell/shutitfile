@@ -195,20 +195,7 @@ ENDIF
 LOGOUT
 ```
 
+[![asciicast](https://asciinema.org/a/48685.png)](https://asciinema.org/a/48685)
+
 Latest version [here](https://github.com/ianmiell/shutit-home-server/blob/master/Shutitfile)
 
-TODO: video
-sudo su
-apt-get update && apt-get install -y asciinema
-
-adduser imiell
-apt-get install -y git python-pip
-pip install shutit
-git clone https://github.com/ianmiell/shutit-home-server
-cd shutit-home-server
-./run.sh
-
-exit
-
-edit the asciinema file
-login and push
