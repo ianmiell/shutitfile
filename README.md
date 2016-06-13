@@ -50,9 +50,11 @@ PAUSE_POINT You now have a shell to examine the situation
 LOGOUT
 ```
 
+Here is a video of the above script being run on my laptop.
+
 [![asciicast of above script](https://asciinema.org/a/48639.png)](https://asciinema.org/a/48639)
 
-A cheat sheet for ShutIt commands is available [here](https://github.com/ianmiell/shutit-templates/blob/shutitfile/CheatSheet.md)
+A cheat sheet for ShutIt commands [is available here](https://github.com/ianmiell/shutit-templates/blob/shutitfile/CheatSheet.md)
 
 ## Installation
 
@@ -68,7 +70,11 @@ sudo pip install shutit
 
 2) Create Docker image, commit and push
 
+3) Set up my home server
+
 3) Docker image with option to build dev tools in
+
+4) 
 
 ## 0) Set up
 
@@ -112,8 +118,8 @@ The next example does the same, but creates a simple Docker image.
 DELIVERY docker
 FROM debian
 INSTALL nginx
-COMMIT imiell/example_shutitfile:latest
-PUSH imiell/example_shutitfile:latest
+COMMIT myusername/example_shutitfile:latest
+PUSH myusername/example_shutitfile:latest
 ```
 
 Your Docker credentials need to be in your ~/.shutit/config file, eg:
@@ -126,5 +132,61 @@ password:mypassword
 email:you@example.com
 ```
 
+## 3) Set up my home server
+
+This more practical example sets up my home server. It also serves as documentation
+for what my home servers and other machines typically need.
+
+```
+# We assert here that we are running as root
+SEND whoami
+ASSERT_OUTPUT root
+
+# We assert here the user imiell was set up by the OS installation process
+SEND cut -d: -f1 /etc/passwd | grep imiell | wc -l
+ASSERT_OUTPUT 1
+
+# Install required packages
+INSTALL docker.io
+INSTALL openssh-server
+INSTALL run-one
+INSTALL apache2
+INSTALL vim
+INSTALL python-pip
+INSTALL meld
+INSTALL tmux
+INSTALL docker-compose
+INSTALL openjdk-8-jre
+INSTALL alien
+INSTALL brasero
+INSTALL virtualbox
+INSTALL vagrant
+
+# Install ShutIt, naturally
+RUN pip install shutit
+# Add imiell to the docker user group
+RUN usermod -G docker -a imiell 
+
+# Pull my dev tools image from Dockerhub
+RUN docker pull imiell/docker-dev-tools-image
+
+# Set up local storage
+RUN mkdir -p /media/storage_{1,2}
+
+# Generate an ssh key
+RUN ssh-keygen
+# Note that the response to 'already exists' below prevents overwrite here.                                                                                                       
+EXPECT_MULTI ['file in which':'','empty for no passphrase':'','Enter same passphrase again':'','already exists':'n'] 
+
+# Log me in as imiell
+LOGIN imiell
+# If it's not been done before, check out my dotfiles and set it up
+IF NOT FILE_EXISTS /home/imiell/.dotfiles
+	RUN git clone --depth=1 https://github.com/ianmiell/dotfiles ~imiell/.dotfiles
+	RUN cd .dotfiles
+	RUN ./script/bootstrap
+ENDIF
+LOGOUT
+```
 
 TODO: video
