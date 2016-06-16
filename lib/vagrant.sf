@@ -16,6 +16,7 @@ ELIF INSTALL_TYPE yum
 	RUN rm -f /tmp/vagrant.rpm
 ELSE
 	INSTALL vagrant
+ENDIF
 
 
 # Is it installed already?
