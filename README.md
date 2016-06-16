@@ -60,7 +60,7 @@ Here is a video of the above script being run on my laptop.
 
 [![asciicast of above script](https://asciinema.org/a/48639.png)](https://asciinema.org/a/48639)
 
-A cheat sheet for ShutIt commands [is available here](https://github.com/ianmiell/shutitfile/CheatSheet.md)
+A cheat sheet for ShutIt commands [is available here](https://github.com/ianmiell/shutitfile/blob/master/CheatSheet.md)
 
 ## Installation
 
