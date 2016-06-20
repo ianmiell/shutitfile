@@ -2,30 +2,48 @@
 #https://www.g-loaded.eu/2005/11/10/be-your-own-ca/
 
 CONFIG days 365
+CONFIG key_strength 4096
 CONFIG folder /etc/mycerts
-CONFIG country_name
-CONFIG state_or_province_name
-CONFIG locality_name
-CONFIG organization_name
-CONFIG organizational_unit_name
-CONFIG domain_name
-CONFIG email_address
+CONFIG country_name GB
+CONFIG state_or_province_name England
+CONFIG locality_name London
+CONFIG organization_name Me
+CONFIG organizational_unit_name MeMeMe
+CONFIG domain_name example.com
+CONFIG email_address me@example.com
 CONFIG_SECRET password
 
 RUN whoami
 ASSERT_OUTPUT root
 
-IF FILE_EXISTS {{ shutit.folder }}
-	RUN mkdir -p {{ shutit.folder }}
-	RUN mkdir -m 0755 {{ shutit.folder }}/myCA {{ shutit.folder }}/private {{ shutit.folder }}/certs {{ shutit.folder }}/newcerts {{ shutit.folder }}/crl
-	RUN touch {{ shutit.folder }}/myCA/index.txt
-	RUN echo '01' > {{ shutit.folder }}/myCA/serial
-ENDIF 
+RUN mkdir -p {{ shutit.folder }}
 WORKDIR {{ shutit.folder }}
 
-RUN openssl req -new -x509 -extensions v3_ca -keyout private/myca.key -out certs/myca.crt -days 1825
-EXPECT_MULTI ['Country Name={{ shutit.country_name }}','State or Province={{ shutit.state_or_province_name }}','Locality Name={{ shutit.locality_name }}','Organization Name={{ shutit.organization_name }}','Organizational Unit Name={{ shutit.organizational_unit_name }}','Common Name={{ shutit.server_name }}','Email Address={{ shutit.email_address }}']
+INSTALL openssl
 
-PAUSE_POINT Two files were created: certs/myca.crt - This is your CA's certificate and can be publicly available and of course world readable; private/myca.key - This is your CA's private key. Although it is protected with a passphrase you should restrict access to it, so that only root can read it
+#https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs
+# Create a certificate authority key with a password
+RUN openssl genrsa -aes256 -passout pass:{{ shutit.password }} -out ca-key.pem {{ shutit.key_strength }}
+# Generate a server key
+RUN openssl genrsa -out server-key.pem {{ shutit.key_strength }}
+# Create a client key
+RUN openssl genrsa -out key.pem {{ shutit.key_strength }}
+#Certificate signing request
+RUN openssl req -new -x509 -days {{ shutit.days }} -key ca-key.pem -passin pass:{{ shutit.password }} -sha256 -out ca.pem -subj "/C={{ shutit.country_name }}/ST={{ shutit.state_or_province_name }}/L={{ shutit.locality_name }}/O={{ shutit.organization_name }}/CN={{ shutit.domain_name }}"
 
-RUN chmod 0400 {{ shutit.folder }}/myCA/private/myca.key
+# Create a csr (certificate signing request)
+RUN openssl req -subj "/CN={{ shutit.country_name }}" -new -key server-key.pem -out server.csr
+# man x509 - -req=use certificate signing request (rather than certificate on input)
+RUN openssl x509 -req -days {{ shutit.days }} -in server.csr -CA ca.pem -CAkey ca-key.pem -passin "pass:{{ shutit.password }}" -CAcreateserial -out server-cert.pem
+
+# Create a csr for the client
+RUN openssl req -subj '/CN=client' -new -key key.pem -out client.csr
+# man x509 - -req=use certificate signing request (rather than certificate on input)
+RUN openssl x509 -req -days {{ shutit.days }} -in client.csr -CA ca.pem -CAkey ca-key.pem -passin "pass:{{ shutit.password }}" -CAcreateserial -out cert.pem -extfile <(echo "extendedKeyUsage = clientAuth")
+
+# Private files (keys)
+RUN chmod 0400 ca-key.pem key.pem server-key.pem
+# Other files (certs)
+RUN chmod 0444 ca.pem server-cert.pem cert.pem
+
+RUN rm client.csr server.csr
