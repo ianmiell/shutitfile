@@ -1,6 +1,8 @@
 # Generates an SSH key et al
 #https://www.g-loaded.eu/2005/11/10/be-your-own-ca/
 
+DESCRIPTION Generates ssh keys for you based on the config set in the ShutItFile
+
 CONFIG days 365
 CONFIG key_strength 4096
 CONFIG folder /etc/mycerts

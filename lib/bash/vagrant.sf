@@ -1,3 +1,5 @@
+DESCRIPTION Sets up vagrant on the host
+
 CONFIG vagrant_version 1.8.1
 CONFIG_SECRET your_sudo_password
 
