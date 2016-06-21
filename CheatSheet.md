@@ -45,8 +45,8 @@
 
 <table>
 <tr><td><b>Condition</b></td><td><b>Description</b></td></tr>
-<tr><td>FILE_EXISTS [arg]</td><td>Conditional argument hinging on whether file (or directory) exists.</td></tr>
-<tr><td>RUN [arg]</td><td>Conditional argument hinging on the type of installs in this env (eg apt, yum, emerge et al)</td></tr>
+<tr><td>FILE_EXISTS [arg]</td><td>Conditional argument hinging on whether file (or directory) exists</td></tr>
+<tr><td>RUN [arg]</td><td>Conditional argument hinging on whether the command returned successfully</td></tr>
 <tr><td>INSTALL_TYPE [arg]</td><td>Conditional argument hinging on the type of installs in this env (eg apt, yum, emerge et al)</td></tr>
 </table>
 
