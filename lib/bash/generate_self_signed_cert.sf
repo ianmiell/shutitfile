@@ -13,7 +13,10 @@ CONFIG organization_name Me
 CONFIG organizational_unit_name MeMeMe
 CONFIG domain_name example.com
 CONFIG email_address me@example.com
+CONFIG cert_server_name imiell
 CONFIG_SECRET password
+
+USER root
 
 RUN whoami
 ASSERT_OUTPUT root
@@ -27,25 +30,29 @@ INSTALL openssl
 # Create a certificate authority key with a password
 RUN openssl genrsa -aes256 -passout pass:{{ shutit.password }} -out ca-key.pem {{ shutit.key_strength }}
 # Generate a server key
-RUN openssl genrsa -out server-key.pem {{ shutit.key_strength }}
+RUN openssl genrsa -out {{ shutit.cert_server_name }}-key.pem {{ shutit.key_strength }}
 # Create a client key
 RUN openssl genrsa -out key.pem {{ shutit.key_strength }}
-#Certificate signing request
+
+# Create certificate authority certificate (pem), using certificate authority key just generated
 RUN openssl req -new -x509 -days {{ shutit.days }} -key ca-key.pem -passin pass:{{ shutit.password }} -sha256 -out ca.pem -subj "/C={{ shutit.country_name }}/ST={{ shutit.state_or_province_name }}/L={{ shutit.locality_name }}/O={{ shutit.organization_name }}/CN={{ shutit.domain_name }}"
 
-# Create a csr (certificate signing request)
-RUN openssl req -subj "/CN={{ shutit.country_name }}" -new -key server-key.pem -out server.csr
-# man x509 - -req=use certificate signing request (rather than certificate on input)
-RUN openssl x509 -req -days {{ shutit.days }} -in server.csr -CA ca.pem -CAkey ca-key.pem -passin "pass:{{ shutit.password }}" -CAcreateserial -out server-cert.pem
+# Create a csr (certificate signing request) using the server key
+RUN openssl req -subj "/CN={{ shutit.country_name }}" -new -key {{ shutit.cert_server_name }}-key.pem -out {{ shutit.cert_server_name }}.csr
+# man x509 - -req=use certificate signing request (rather than certificate on input), using the certificate authority certificate, and key
+RUN openssl x509 -req -days {{ shutit.days }} -in {{ shutit.cert_server_name }}.csr -CA ca.pem -CAkey ca-key.pem -passin "pass:{{ shutit.password }}" -CAcreateserial -out {{ shutit.cert_server_name }}-cert.pem
 
-# Create a csr for the client
+# Create a csr for the client using the client key
 RUN openssl req -subj '/CN=client' -new -key key.pem -out client.csr
-# man x509 - -req=use certificate signing request (rather than certificate on input)
+# man x509 - -req=use certificate signing request (rather than certificate on input), using the certificate authority certificate, and key
 RUN openssl x509 -req -days {{ shutit.days }} -in client.csr -CA ca.pem -CAkey ca-key.pem -passin "pass:{{ shutit.password }}" -CAcreateserial -out cert.pem -extfile <(echo "extendedKeyUsage = clientAuth")
 
 # Private files (keys)
-RUN chmod 0400 ca-key.pem key.pem server-key.pem
+RUN chmod 0400 ca-key.pem key.pem {{ shutit.cert_server_name }}-key.pem
 # Other files (certs)
-RUN chmod 0444 ca.pem server-cert.pem cert.pem
+RUN chmod 0444 ca.pem {{ shutit.cert_server_name }}-cert.pem cert.pem
 
-RUN rm client.csr server.csr
+RUN rm client.csr {{ shutit.cert_server_name }}.csr
+
+
+# TODO: cat blah | openssl x509 -text 
