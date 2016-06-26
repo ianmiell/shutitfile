@@ -9,14 +9,12 @@ CONFIG folder /etc/mycerts
 CONFIG country_name GB
 CONFIG state_or_province_name England
 CONFIG locality_name London
-CONFIG organization_name Me
-CONFIG organizational_unit_name MeMeMe
-CONFIG domain_name example.com
-CONFIG email_address me@example.com
-CONFIG cert_server_name imiell
+CONFIG organization_name meirion
+CONFIG organizational_unit_name ianandsarahs
+CONFIG domain_name ianandsarahs.tk
+CONFIG email_address ian.miell@gmail.com
+CONFIG cert_server_name ianandsarahs
 CONFIG_SECRET password
-
-USER root
 
 RUN whoami
 ASSERT_OUTPUT root
