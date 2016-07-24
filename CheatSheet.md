@@ -5,7 +5,6 @@
 <table>
 <tr><td><b>Command</b></td><td><b>Description</b></td></tr>
 <tr><td>DELIVERY [arg]             </td><td>ShutIt delivery type (bash, docker) </td></tr>
-<tr><td>MODULE_ID [arg]            </td><td>A unique identifying string for this module, eg com.mycorp.myproject.mymodule </td></tr>
 <tr><td>MAINTAINER [arg]           </td><td>Maintainer of the ShutIt module that is created </td></tr>
 <tr><td>INSTALL [arg]              </td><td>Install a package. Figures out local package manager </td></tr>
 <tr><td>REMOVE [arg]               </td><td>Remove a package. Figures out local package manager </td></tr>
@@ -18,7 +17,7 @@
 <tr><td>UNTIL [arg]                </td><td>Send the previous command until the specified regexp is seen in the output </td></tr>
 <tr><td>GET_PASSWORD [arg]         </td><td>Get a password from the user where appropriate.  Only allowed after a LOGIN or USER line. [arg] is the prompt the user sees eg 'Input the password for the machine x' </td></tr>
 <tr><td>ENV [name]=[value]         </td><td>Exports a variable in the local build context </td></tr>
-<tr><td>DEPENDS [arg]              </td><td>Stipulate a dependency on a MODULE_ID </td></tr>
+<tr><td>DEPENDS [arg]              </td><td>Stipulate a dependency on a module_id </td></tr>
 <tr><td>WORKDIR [arg]              </td><td>Change directory during build </td></tr>
 <tr><td>IF [condition] [arg]       </td><td>Start an IF block that runs commands if the condition is met (see conditions) </td></tr>
 <tr><td>IF_NOT [condition] [arg]   </td><td>Start an IF block that runs commands if the condition is met (see conditions)  </td></tr>
