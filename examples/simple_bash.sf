@@ -1,0 +1,3 @@
+IF_NOT FILE_EXISTS /tmp/shutit_marker
+RUN touch /tmp/shutit_marker
+ENDIF

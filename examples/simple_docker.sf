@@ -1,0 +1,5 @@
+DELIVERY docker
+FROM debian
+INSTALL nginx
+COMMIT imiell/example_shutitfile:latest
+PUSH imiell/example_shutitfile:latest 
