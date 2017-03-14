@@ -2,7 +2,7 @@
 set -e
 
 MODULE_NAME="simple_two_machine"
-DIR="/tmp/shutit_built/space/git/shutitfile/examples/simple_two_machine"
+DIR="/tmp/shutit_built/simple_two_machine"
 DOMAIN="simple_two_machine.simple_two_machine"
 DELIVERY="bash"
 PATTERN="vagrant"

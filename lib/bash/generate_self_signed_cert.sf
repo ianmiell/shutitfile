@@ -5,7 +5,7 @@ DESCRIPTION Generates ssh keys for you based on the config set in the ShutItFile
 
 CONFIG days 365
 CONFIG key_strength 4096
-CONFIG folder /etc/mycerts
+CONFIG folder /etc/mycertscto
 CONFIG country_name GB
 CONFIG state_or_province_name England
 CONFIG locality_name London
