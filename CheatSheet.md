@@ -4,41 +4,43 @@
 
 <table>
 <tr><td><b>Command</b></td><td><b>Description</b></td></tr>
-<tr><td>DELIVERY [arg]             </td><td>ShutIt delivery type (bash, docker) </td></tr>
-<tr><td>MODULE_ID [arg]            </td><td>A unique identifying string for this module, eg com.mycorp.myproject.mymodule </td></tr>
-<tr><td>MAINTAINER [arg]           </td><td>Maintainer of the ShutIt module that is created </td></tr>
-<tr><td>INSTALL [arg]              </td><td>Install a package. Figures out local package manager </td></tr>
-<tr><td>REMOVE [arg]               </td><td>Remove a package. Figures out local package manager </td></tr>
-<tr><td>SEND [arg]                 </td><td>String to input at terminal </td></tr>
-<tr><td>RUN [arg]                  </td><td>See SEND </td></tr>
-<tr><td>EXPECT [arg]               </td><td>Continue if the specified regexp is seen in the output </td></tr>
-<tr><td>EXPECT_MULTI ['[name1]=[value1]','[name2]=[value2]',...]         </td><td>A series of name-value pairs. If the 'name' is seen as a prompt, then SEND the value. eg EXPECT_MULTI ['sername=myuser','assword=mypass'] The name need not be seen in the output to continue successfully.</td></tr>
-<tr><td>EXPECT_REACT ['[name1]=[value1]','[name2]=[value2]',...]         </td><td>A series of name-value pairs. If the 'name' is seen in the previous SEND's output, then SEND the value. eg EXPECT_REACT ['ERROR=echo ERROR > /tmp/res','OK=echo OK /tmp/res']</td></tr>
 <tr><td>ASSERT_OUTPUT [arg]        </td><td>If the output from the previous command does not match, then throw an error </td></tr>
-<tr><td>UNTIL [arg]                </td><td>Send the previous command until the specified regexp is seen in the output </td></tr>
-<tr><td>GET_PASSWORD [arg]         </td><td>Get a password from the user where appropriate.  Only allowed after a LOGIN or USER line. [arg] is the prompt the user sees eg 'Input the password for the machine x' </td></tr>
-<tr><td>ENV [name]=[value]         </td><td>Exports a variable in the local build context </td></tr>
+<tr><td>COMMENT [arg]              </td><td>Comment to pass through to the ShutIt script </td></tr>
+<tr><td>CONFIG [name_arg] [default_value]    </td><td>A config item that can be defaulted to default_value (optional), with the name name_arg. Can be referred to elsewhere in the module with {{ shutit.name_arg }}. <br/>For example, if you have a line 'CONFIG foo bar' then you could have another line such as: 'RUN rm {{ shutit.foo }}' which would be run as: 'RUN rm bar'. If no default is given, it is requested from the user.</td></tr>
+<tr><td>CONFIG_SECRET [name_arg] [default_value]    </td><td>Same as CONFIG, but inputs the command interactively without echoing.</td></tr>
+<tr><td>DELIVERY [arg]             </td><td>ShutIt delivery type (bash, docker) </td></tr>
 <tr><td>DEPENDS [arg]              </td><td>Stipulate a dependency on a MODULE_ID </td></tr>
-<tr><td>WORKDIR [arg]              </td><td>Change directory during build </td></tr>
-<tr><td>IF [condition] [arg]       </td><td>Start an IF block that runs commands if the condition is met (see conditions) </td></tr>
-<tr><td>IF_NOT [condition] [arg]   </td><td>Start an IF block that runs commands if the condition is met (see conditions)  </td></tr>
+<tr><td>DESCRIPTION [arg]          </td><td>A description of the module </td></tr>
 <tr><td>ELIF_NOT [condition] [arg] </td><td>Start an ELSE block that runs commands if the condition is met (see conditions) </td></tr>
 <tr><td>ELIF [condition] [arg]     </td><td>Start else ELSE block that runs commands if the if the condition is met (see conditions) </td></tr>
 <tr><td>ELSE                       </td><td>else block for an IF block </td></tr>
 <tr><td>ENDIF                      </td><td>end the IF block </td></tr>
-<tr><td>PAUSE_POINT [arg]          </td><td>Pause the build and give the user a shell to interact with. [arg] is the message the user sees eg 'Check all is ok' </td></tr>
+<tr><td>ENV [name]=[value]         </td><td>Exports a variable in the local build context </td></tr>
+<tr><td>EXPECT [arg]               </td><td>Continue if the specified regexp is seen in the output </td></tr>
+<tr><td>EXPECT_MULTI ['[name1]=[value1]','[name2]=[value2]',...]         </td><td>A series of name-value pairs. If the 'name' is seen as a prompt, then SEND the value. eg EXPECT_MULTI ['sername=myuser','assword=mypass'] The name need not be seen in the output to continue successfully.</td></tr>
+<tr><td>EXPECT_REACT ['[name1]=[value1]','[name2]=[value2]',...]         </td><td>A series of name-value pairs. If the 'name' is seen in the previous SEND's output, then SEND the value. eg EXPECT_REACT ['ERROR=echo ERROR > /tmp/res','OK=echo OK /tmp/res']</td></tr>
+<tr><td>GET_PASSWORD [arg]         </td><td>Get a password from the user where appropriate.  Only allowed after a LOGIN or USER line. [arg] is the prompt the user sees eg 'Input the password for the machine x' </td></tr>
+<tr><td>IF [condition] [arg]       </td><td>Start an IF block that runs commands if the condition is met (see conditions) </td></tr>
+<tr><td>IF_NOT [condition] [arg]   </td><td>Start an IF block that runs commands if the condition is met (see conditions)  </td></tr>
+<tr><td>INSTALL [arg]              </td><td>Install a package. Figures out local package manager </td></tr>
+<tr><td>LOG [arg]                  </td><td>Set the log level to [arg], which can be one of: DEBUG, INFO, WARNING, ERROR, CRITICAL</td></tr>
 <tr><td>LOGIN [arg]                </td><td>Log in to a fresh shell with the given command (eg 'ssh user@host', or just 'bash'). Must be matched by a LOGOUT within the same section. See also LOGOUT, USER, GET_PASSWORD</td></tr>
 <tr><td>LOGOUT                     </td><td>Log out from a LOGIN/USER command </td></tr>
-<tr><td>USER [arg]                 </td><td>Become user specified (with su -). See also LOGIN, GET_PASSWORD, LOGOUT. Must be matched by a LOGOUT within the same section </td></tr>
-<tr><td>COMMENT [arg]              </td><td>Comment to pass through to the ShutIt script </td></tr>
-<tr><td>DESCRIPTION [arg]          </td><td>A description of the module </td></tr>
+<tr><td>MAINTAINER [arg]           </td><td>Maintainer of the ShutIt module that is created </td></tr>
+<tr><td>MODULE_ID [arg]            </td><td>A unique identifying string for this module, eg com.mycorp.myproject.mymodule </td></tr>
+<tr><td>PAUSE_POINT [arg]          </td><td>Pause the build and give the user a shell to interact with. [arg] is the message the user sees eg 'Check all is ok' </td></tr>
+<tr><td>QUIT [arg]                 </td><td>Exit the run with a message [arg].</td></tr>
+<tr><td>REMOVE [arg]               </td><td>Remove a package. Figures out local package manager </td></tr>
+<tr><td>REPLACE_LINE ['filename=[filename]','line=[new line]','pattern=[regexp]']         </td><td>Replace the line matched by pattern in filename with the newline</td></tr>
+<tr><td>RUN [arg]                  </td><td>See SEND </td></tr>
 <tr><td>SCRIPT_BEGIN               </td><td>The lines following this directive are run as a shell script. See also SCRIPT_END </td></tr>
 <tr><td>SCRIPT_END                 </td><td>The termination of a SCRIPT section. See also SCRIPT_BEGIN</td></tr>
-<tr><td>REPLACE_LINE ['filename=[filename]','line=[new line]','pattern=[regexp]']         </td><td>Replace the line matched by pattern in filename with the newline</td></tr>
-<tr><td>LOG [arg]                  </td><td>Set the log level to [arg], which can be one of: DEBUG, INFO, WARNING, ERROR, CRITICAL</td></tr>
-<tr><td>CONFIG [name_arg] [default_value]    </td><td>A config item that can be defaulted to default_value (optional), with the name name_arg. Can be referred to elsewhere in the module with {{ shutit.name_arg }}. <br/>For example, if you have a line 'CONFIG foo bar' then you could have another line such as: 'RUN rm {{ shutit.foo }}' which would be run as: 'RUN rm bar'. If no default is given, it is requested from the user.</td></tr>
-<tr><td>CONFIG_SECRET [name_arg] [default_value]    </td><td>Same as CONFIG, but inputs the command interactively without echoing.</td></tr>
-<tr><td>QUIT [arg]                 </td><td>Exit the run with a message [arg].</td></tr>
+<tr><td>SEND [arg]                 </td><td>String to input at terminal </td></tr>
+<tr><td>UNTIL [arg]                </td><td>Send the previous command until the specified regexp is seen in the output </td></tr>
+<tr><td>USER [arg]                 </td><td>Become user specified (with su -). See also LOGIN, GET_PASSWORD, LOGOUT. Must be matched by a LOGOUT within the same section </td></tr>
+<tr><td>VAGRANT_LOGIN [arg]        </td><td>Log into vagrant machine specified as root </td></tr>
+<tr><td>VAGRANT_LOGOUT             </td><td>Log out of vagrant machine </td></tr>
+<tr><td>WORKDIR [arg]              </td><td>Change directory during build </td></tr>
 </table>
 
 ## Conditions
