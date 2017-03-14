@@ -1,0 +1,28 @@
+DELIVERY bash
+
+# Set up trivial webserver on machine1
+VAGRANT_LOGIN machine1
+RUN nohup socat TCP-LISTEN:80,crlf,reuseaddr,fork SYSTEM:"echo HTTP/1.0 200; echo Content-Type\: text/plain; echo machine1" &
+VAGRANT_LOGOUT
+
+# Set up trivial webserver on machine2
+VAGRANT_LOGIN machine2
+RUN nohup socat TCP-LISTEN:80,crlf,reuseaddr,fork SYSTEM:"echo HTTP/1.0 200; echo Content-Type\: text/plain; echo machine2" &
+VAGRANT_LOGOUT
+
+# Test machine2 from machine1
+VAGRANT_LOGIN machine1
+RUN curl machine2
+VAGRANT_LOGOUT
+
+# Test machine1 from machine2
+VAGRANT_LOGIN machine2
+RUN curl machine1
+VAGRANT_LOGOUT
+
+# Example debug
+VAGRANT_LOGIN machine1
+PAUSE_POINT 'Have a look around, debug away'
+# Trigger a 'failure'
+RUN curl machine2
+VAGRANT_LOGOUT
